@@ -1,6 +1,6 @@
 # Predicting the length of stay in the ICU using the MIMIC-III database
 
-**Please note: This is a work in progress (I'm just beginning) **
+### Please note: This is a work in progress - I'm just beginning
 
 ## Data:
 MIMIC-III is a publically available critical care database containing de-identified information from over 40,000 patients who stayed at the Beth Israel Deaconess Medical Center between 2001 and 2012. The database includes patient demographic information, admittance and discharge times, diagnostic and billing codes, laboratory test results, procedures, medications, caregiver notes, imaging reports, mortality (in and out of the hosptial) as well as vital sign measurements collected per hour at the bedside. While care has been taken to de-identify this data, additional considerations are needd when working with this data. Thus, to access the database, one must first complete a data research course and sign a Data Use Agreement (more information can be found here: https://mimic.physionet.org/gettingstarted/access/).  
