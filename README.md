@@ -1,4 +1,4 @@
-# Predicting the length of stay in the ICU using the MIMIC-III database
+# Predicting central line infections and length of stay in the ICU using the MIMIC-III database
 
 ### Please note: This is a work in progress - just beginning
 
