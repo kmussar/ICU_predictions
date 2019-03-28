@@ -55,7 +55,7 @@ I started my project with random forest’s feature importance scores (determine
 
 As only three features would lend itself well to creating a general rule that could be used to make policy decisions in healthcare settings, I continued with only these three features. They are: injury and poisoning, infectious diseases, and external causes of injury (ICD-9 codes: 800-999, 001-139, and E, respectively). I then compared five different classification models: Logistic Regression, Random Forest, Naïve Bayes, Support Vector Machine, and K-nearest Neighbor. Of note, prior to running models, I balanced the classes with random over sampler and used standard scalar. When comparing models on the ROC curve, it was apparent that logistic regression and random forest showed the best performance and were comparable to each other. I chose to use Logistic Regression as I wanted to determine the probabilities of infection for patients and logistic regression has better probability calibration. 
 
-![figure_3](ROC_Curve.png)
+![figure_3](https://github.com/kmussar/ICU_predictions/blob/master/ROC_curve.png)
 *Figure 3. ROC Curve for classification models on top 3 features only. Scores indicate area under the curve (AUC).* 
 
 
