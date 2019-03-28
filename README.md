@@ -20,8 +20,8 @@ Of the 26 tables available in the MIMIC-III dataset, I worked with the following
 I started my project by merging the PATIENTS, ICUSTAYS, and ADMISSIONS tables together on icustay_id which is a unique identifier in all 3 tables. I nicknamed the resulting table “PIA”. This table includes demographic information as well as administrative information about the patients’ stays in the ICU. Next, since, by definition, CLABSIs could only develop in patients who had central lines, I filtered my dataset to include only these patients. I utilized the following SQL script to extract central line information from the PROCEDUREEVENTS_MV table:  https://github.com/MIT-LCP/mimic-code/edit/master/concepts/durations/central-line-durations.sql. Subsequently, I merged my “PIA” table onto my central line durations table (left join on icustay_id). Lastly, after cleaning and engineering the diagnoses codes from the DIAGNOSES_ICD table, I merged this information onto my PIA + Central Line Durations table (left join on hadm_id). 
 
 
-![figure 1](Filtered DataSet.png)
-Figure 1. The MIMIC-III Database includes information from 61,532 unique ICU stays. In 62% of these stays, patients received central lines. Within patients who received central lines, 17% (6,427 patients) of these central lines became infected. 
+![figure 1](Filtered_DataSet.png)
+*Figure 1. The MIMIC-III Database includes information from 61,532 unique ICU stays. In 62% of these stays, patients received central lines. Within patients who received central lines, 17% (6,427 patients) of these central lines became infected.* 
 
 
 Of note, the MIMIC-III database includes patient stays at 6 different ICUs: CSRU, CCU, MICU, SICU, TSICU, and NICU. I removed NICU entries as these patients are considerably different from those staying in other divisions.  
@@ -50,21 +50,21 @@ I started my project with random forest’s feature importance scores (determine
 
 
 ![figure 2](Relative_Feature_Importance.png)
-Figure 2. Relative absolute importance of each of 45 features determined by comparing baseline random forest out of bag sample scores with oob_scores from models missing a column each.  Blue indicates the three most prominent features: injury and poisoning, infectious diseases, and external causes of injury. 
+*Figure 2. Relative absolute importance of each of 45 features determined by comparing baseline random forest out of bag sample scores with oob_scores from models missing a column each.  Blue indicates the three most prominent features: injury and poisoning, infectious diseases, and external causes of injury.* 
 
 
 As only three features would lend itself well to creating a general rule that could be used to make policy decisions in healthcare settings, I continued with only these three features. They are: injury and poisoning, infectious diseases, and external causes of injury (ICD-9 codes: 800-999, 001-139, and E, respectively). I then compared five different classification models: Logistic Regression, Random Forest, Naïve Bayes, Support Vector Machine, and K-nearest Neighbor. Of note, prior to running models, I balanced the classes with random over sampler and used standard scalar. When comparing models on the ROC curve, it was apparent that logistic regression and random forest showed the best performance and were comparable to each other. I chose to use Logistic Regression as I wanted to determine the probabilities of infection for patients and logistic regression has better probability calibration. 
 
 
 ![figure 3](ROC_Curve.png)
-Figure 3. ROC Curve for classification models on top 3 features only. Scores indicate area under the curve (AUC). 
+*Figure 3. ROC Curve for classification models on top 3 features only. Scores indicate area under the curve (AUC).* 
 
 
 Since my model had only 3 features, and each feature was binary, there was only eight possible combinations that could exist in my data. Thus, I fed these combinations to my model as a test set to map the probability of infection to each scenario. I determined that the scenarios with the highest probabilities of infection were when patients were diagnosed with both injury and infectious disease. Focusing on patients with these diagnoses, in my test set, I would capture 42% of all CLABSIs. While promising, over half of infections are not identified with these criteria. Instead, if I expand the population to include patients with a diagnosis of injury (instead of injury + infectious disease), then I was able to capture 80% of all CLABSIs (recall of .8). This general rule would result in precision of 67%. 
 
 
 ![figure 4](model_recommendation.png)
-Figure 4. Diagram showing the eight possible combinations of my three binary features and the probabilities of infection associated with each scenario. The dark blue box highlights the scenarios with the highest probabilities of infection (correlating with 42% recall) and the light blue box encapsulates a larger population correlating with 80% recall. 
+*Figure 4. Diagram showing the eight possible combinations of my three binary features and the probabilities of infection associated with each scenario. The dark blue box highlights the scenarios with the highest probabilities of infection (correlating with 42% recall) and the light blue box encapsulates a larger population correlating with 80% recall.* 
 
 
 
