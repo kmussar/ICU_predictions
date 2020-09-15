@@ -1,11 +1,12 @@
 # Predicting central line infections in the ICU using the MIMIC-III database
 
 ## Motivation: 
-Approximately half of all patients in critical care settings will need a central line for their care <sup>1</sup>. Central lines are catheters placed into a large vein near the center of the body and are used for delivering medications that can be damaging to peripheral veins, for long-term administration of antibiotics, pain medications, nutrition, and/or chemotherapy, and for patients that require frequent blood draws or frequent IV access. However, central lines can cause serious adverse effects including pneumothorax, an abnormal collection of air in the space between the lung and chest wall, thrombosis, blood clots, and bloodstream infections. Bloodstream infections are easily the most expensive healthcare-associated infection costing between $17,000 and $95,000 per case <sup>2</sup>. It is estimated that per year 250,000 cases of central line-associated bloodstream infections occur, with a mortality rate of 10% <sup>3</sup>.  Fortunately, however, these infections are preventable with proper aseptic techniques, surveillance, and maintenance. A recent study recently showed that the nurse-to-patient ratio was the strongest predictor in compliance to proper infection prevention guidelines. However, hospitals often do not have enough nurses so that every patient has a dedicated nurse. Thus, I aimed to predict which patients were at high risk of developing central line-associated bloodstream infections and what factors contributed to this risk. Knowing this, hospital staff could prioritize dedicated nurses for high-risk patients so that infections could be avoided. 
+Approximately half of all patients in critical care settings will need a central line for their care<sup>1</sup>. Central lines are catheters placed into a large vein near the center of the body and are used for delivering medications that can be damaging to peripheral veins, for long-term administration of antibiotics, pain medications, nutrition, and/or chemotherapy, and for patients that require frequent blood draws or frequent IV access. However, central lines can cause serious adverse effects including pneumothorax, an abnormal collection of air in the space between the lung and chest wall, thrombosis, blood clots, and bloodstream infections. Bloodstream infections are easily the most expensive healthcare-associated infection costing between $17,000 and $95,000 per case<sup>2</sup>. It is estimated that per year 250,000 cases of central line-associated bloodstream infections occur, with a mortality rate of 10%<sup>3</sup>.  Fortunately, however, these infections are preventable with proper aseptic techniques, surveillance, and maintenance. A recent study recently showed that the nurse-to-patient ratio was the strongest predictor in compliance to proper infection prevention guidelines. However, hospitals often do not have enough nurses so that every patient has a dedicated nurse. Thus, I aimed to predict which patients were at high risk of developing central line-associated bloodstream infections and what factors contributed to this risk. Knowing this, hospital staff could prioritize dedicated nurses for high-risk patients so that infections could be avoided. 
 
 
 ## Data:
 MIMIC-III is a publicly available critical care database containing de-identified information from over 40,000 patients who stayed at the Beth Israel Deaconess Medical Center between 2001 and 2012. The database includes patient demographic information, admittance and discharge times, diagnostic and billing codes, laboratory test results, procedures, medications, caregiver notes, imaging reports, mortality (in and out of the hospital) as well as vital sign measurements collected per hour at the bedside. While care has been taken to de-identify this data, additional considerations are needed when working with this data. Thus, to access the database, I first completed the required data research course and signed the Data Use Agreement (more information about how to access this dataset can be found here: https://mimic.physionet.org/gettingstarted/access/). Due to the nature of this data, I will not be able to share any raw data on github. 
+
 The data is stored as postgreSQL database in 26 tables. The schema for the database can be found on the MIMIC website, linked here: https://mimic.physionet.org/mimictables/. I worked with this data through a local version of the PostgreSQL database that I set up on AWS. 
 
 
@@ -21,6 +22,7 @@ I started my project by merging the PATIENTS, ICUSTAYS, and ADMISSIONS tables to
 
 
 ![figure 1](Filtered_DataSet3.png)
+
 *Figure 1. The MIMIC-III Database includes information from 61,532 unique ICU stays. In 62% of these stays, patients received central lines. Within patients who received central lines, 17% (6,427 patients) of these central lines became infected.* 
 
 
@@ -62,7 +64,8 @@ As only three features would lend itself well to creating a general rule that co
 Since my model had only 3 features, and each feature was binary, there was only eight possible combinations that could exist in my data. Thus, I fed these combinations to my model as a test set to map the probability of infection to each scenario. I determined that the scenarios with the highest probabilities of infection were when patients were diagnosed with both injury and infectious disease. Focusing on patients with these diagnoses, in my test set, I would capture 42% of all CLABSIs. While promising, over half of infections are not identified with these criteria. Instead, if I expand the population to include patients with a diagnosis of injury (instead of injury + infectious disease), then I was able to capture 80% of all CLABSIs (recall of .8). This general rule would result in precision of 67%. 
 
 
-![figure 4](model_recommendation.png)
+![figure 4](model_recommendation2.png)
+
 *Figure 4. Diagram showing the eight possible combinations of my three binary features and the probabilities of infection associated with each scenario. The dark blue box highlights the scenarios with the highest probabilities of infection (correlating with 42% recall) and the light blue box encapsulates a larger population correlating with 80% recall.* 
 
 
