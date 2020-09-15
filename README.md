@@ -20,7 +20,7 @@ Of the 26 tables available in the MIMIC-III dataset, I worked with the following
 I started my project by merging the PATIENTS, ICUSTAYS, and ADMISSIONS tables together on icustay_id which is a unique identifier in all 3 tables. I nicknamed the resulting table “PIA”. This table includes demographic information as well as administrative information about the patients’ stays in the ICU. Next, since, by definition, CLABSIs could only develop in patients who had central lines, I filtered my dataset to include only these patients. I utilized the following SQL script to extract central line information from the PROCEDUREEVENTS_MV table:  https://github.com/MIT-LCP/mimic-code/edit/master/concepts/durations/central-line-durations.sql. Subsequently, I merged my “PIA” table onto my central line durations table (left join on icustay_id). Lastly, after cleaning and engineering the diagnoses codes from the DIAGNOSES_ICD table, I merged this information onto my PIA + Central Line Durations table (left join on hadm_id). 
 
 
-![figure 1](Filtered_DataSet.png)
+![figure 1](Filtered_DataSet3.png)
 *Figure 1. The MIMIC-III Database includes information from 61,532 unique ICU stays. In 62% of these stays, patients received central lines. Within patients who received central lines, 17% (6,427 patients) of these central lines became infected.* 
 
 
